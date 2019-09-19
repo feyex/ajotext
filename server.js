@@ -1,0 +1,44 @@
+
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+// const jwt = require('./helpers/jwt');
+// const errorHandler = require('./helpers/error-handler');
+
+//use mongoose library to set up the database connection with MongoDB. We can also use Mongoose to save the data in the database using Mongoose ORM.
+const mongoose = require('mongoose'), 
+config = require('./DB');
+require('./models/users');
+ 
+//controllers for models
+const rtsIndex = require('./routes/index');
+const transactIndex = require('./routes/transaction');
+
+
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.DB, { useNewUrlParser: true }).then(
+  () => {console.log('Database is connected') },
+  err => { console.log('Can not connect to the database'+ err)}
+);
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
+
+
+// api routes
+
+app.use('/api', rtsIndex);
+app.use('/api', transactIndex);
+
+
+// start server
+const port = process.env.PORT || 4000;
+
+const server = app.listen(port, function(){
+ console.log('Listening on port ' + port);
+});
