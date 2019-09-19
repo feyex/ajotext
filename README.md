@@ -7,3 +7,5 @@
 ### Run npm run dev in terminal to launch project.
 
 ### Login to get access token which should be used in the header for authorization to perform transactions
+
+### Use postman to test api created
