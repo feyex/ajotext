@@ -2,20 +2,24 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 
-const transactionCtrl = require ('../controllers/transaction');
+const transactionCtrl = require('../controllers/transaction');
 const validateToken = require('../helpers/validateToken');
 
-  router.get('/transact', transactionCtrl.listTransactions);
+router.get('/transact', transactionCtrl.listTransactions);
 
-  router.get('/transact/:id', transactionCtrl.getTransaction);
+router.get('/sms', transactionCtrl.sendmsg);
 
-  router.post('/transact',validateToken.verifyToken, transactionCtrl.createTransaction);
+router.get('/transact/users/:id', transactionCtrl.UserId);
 
-  router.delete('/transact/:id', transactionCtrl.deleteTransaction);
+router.get('/transact/:id', transactionCtrl.getTransaction);
 
-  
-  router.get('/health', (req, res) => {
-    res.send('OK');
-  });
-  module.exports = router;
+router.post('/transact', validateToken.verifyToken, transactionCtrl.createTransaction, transactionCtrl.sendmsg);
+
+router.delete('/transact/:id', transactionCtrl.deleteTransaction);
+
+
+router.get('/health', (req, res) => {
+  res.send('OK');
+});
+module.exports = router;
 
