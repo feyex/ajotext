@@ -26,7 +26,7 @@ module.exports.createTransaction = (req, res, next) => {
 
     Transaction.create(req.body)
         .then(res => {
-            console.log(res, 'res')
+
             if (res) {
                 next()
             }
