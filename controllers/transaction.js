@@ -25,10 +25,31 @@ module.exports.createTransaction = (req, res, next) => {
     req.body.otp = Otp;
 
     Transaction.create(req.body)
-        .then(res => {
+        .then(created => {
 
-            if (res) {
-                next()
+            if (created) {
+                const OTP = created.otp;
+ 
+                const accountSid = 'AC0cd730d98693ccc89c368b3ee88e913d';
+                const authToken = '4e269bc5f1c9ecf66a65b5c1b2355c4c';
+                const client = require('twilio')(accountSid, authToken);
+            
+                client.messages
+                    .create({
+                        body: 'Otp Code From ajo card is ' + OTP,
+                        from: '+19386666264',
+                        to: '+2347033718271'
+                    })
+                    .then(message =>
+                        console.log(message.sid),
+                        res.status(200)
+                            .json({
+                                status: true,
+                                message: 'Transaction successful and Otp sent to phone number'
+                            })
+            
+                    )
+                    
             }
             else {
                 res.status(401)
@@ -44,6 +65,7 @@ module.exports.createTransaction = (req, res, next) => {
 
 module.exports.sendmsg = (req, res) => {
     const OTP = res.otp;
+    console.log(OTP,res.otp,'otp')
     const accountSid = 'AC0cd730d98693ccc89c368b3ee88e913d';
     const authToken = '4e269bc5f1c9ecf66a65b5c1b2355c4c';
     const client = require('twilio')(accountSid, authToken);

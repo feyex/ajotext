@@ -13,7 +13,7 @@ router.get('/transact/users/:id', transactionCtrl.UserId);
 
 router.get('/transact/:id', transactionCtrl.getTransaction);
 
-router.post('/transact', validateToken.verifyToken, transactionCtrl.createTransaction, transactionCtrl.sendmsg);
+router.post('/transact', validateToken.verifyToken, transactionCtrl.createTransaction);
 
 router.delete('/transact/:id', transactionCtrl.deleteTransaction);
 
